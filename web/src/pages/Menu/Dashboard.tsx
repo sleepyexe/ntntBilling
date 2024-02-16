@@ -38,7 +38,7 @@ const Dashboard = (props: Props) => {
       exit={{
         opacity: 0,
       }}
-      className="w-[30%] h-[20%] bg-card rounded-xl overflow-auto flex flex-col"
+      className="w-min-[30%] h-[20%] bg-card rounded-xl overflow-auto flex flex-col"
     >
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Billing Menu

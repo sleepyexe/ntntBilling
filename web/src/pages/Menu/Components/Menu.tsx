@@ -10,7 +10,7 @@ type Props = {}
 const Menu = (props: Props) => {
   return (
     <>
-        <div className='w-full h-full flex justify-center items-center gap-3'>
+        <div className='w-full h-full flex justify-center items-center gap-3 p-2'>
             <MenuButton menu='test' icon={UserIcon} label={<>Personal <br></br> Invoices</>}/>
             <MenuButton menu='test' icon={ScrollTextIcon} label={<>Pay<br></br> Reference</>}/>
             <MenuButton menu='test' icon={SendIcon} label={<>Create<br></br> Invoice</>}/>
