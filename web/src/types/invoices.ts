@@ -1,11 +1,10 @@
-
 export type InvoicesProps = {
-    ref: string,
-    amount: number,
-    society: string,
-    society_label: string,
-    author: string,
-    author_name: string,
-    status: "paid" | "unpaid",
-    note: string,
+	ref: string,
+	amount: number,
+	society_label: string,
+	society: string,
+	author: string,
+	note: string,
+	status: 'paid' | 'unpaid',
+	author_name: string,
 }

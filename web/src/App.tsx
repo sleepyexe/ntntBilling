@@ -4,7 +4,8 @@ import { debugData } from "./utils/debugData";
 import { AnimatePresence } from 'framer-motion'
 
 import { usePages } from "./state/page";
-import PersonalInvoices from "./pages/PersonalInvoices/PersonalInvoices";
+import PersonalInvoices from './pages/PersonalInvoices/PersonalInvoices'
+import PayReferences from "./pages/PersonalInvoices/PayReferences";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 debugData([
   {
@@ -26,8 +27,11 @@ const App = (props: Props) => {
     <div className="w-screen dark h-screen justify-center items-center flex">
         <AnimatePresence mode="wait">
             {pages === 'dashboard' && <Dashboard />}
-            {pages === 'test' && (
+            {pages === 'personal' && (
                 <PersonalInvoices/>
+            )}
+            {pages === 'payref' && (
+              <PayReferences/>
             )}
         </AnimatePresence>
     </div>

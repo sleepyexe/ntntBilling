@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {motion} from 'framer-motion'
 import { Label } from '@radix-ui/react-label'
 import { usePages } from '@/state/page'
-import { Separator } from '@/components/ui/separator'
 import { DataTable } from './Components/data-table'
 import { columns } from './Components/columns'
-
-type Props = {}
-
-const data = [{
+import { Undo2Icon } from 'lucide-react'
+import { isEnvBrowser } from "@/utils/misc";
+import {useBack} from '@/state/back'
+import { InvoicesProps } from '@/types/invoices'
+import { Button } from '@/components/ui/button'
+const data:InvoicesProps[]  = [{
   "ref": "ABC1234",
   "amount": 570,
   "society": "police",
@@ -145,16 +146,24 @@ const data = [{
   "note": "Speeding"
 }]
 
-const PersonalInvoices = (props: Props) => {
-
+const PersonalInvoices = () => {
     const [pages, setPages] = usePages()
-    const keyHandler = (e: KeyboardEvent) => {
-        if (["Backspace", "Escape"].includes(e.code)) {
-            setPages('dashboard')
-        }
-      };
-  
-    window.addEventListener("keydown", keyHandler);
+      // Handle pressing escape/backspace
+    // useEffect(() => {
+    //   // Only attach listener when we are visible
+    //   if (!back) return;
+
+    //   const keyHandler = (e: any) => {
+    //     if (["Backspace", "Escape"].includes(e.code)) {
+    //       if (isEnvBrowser()) setPages('dashboard');
+    //       else setBack(!back);
+    //     }
+    //   };
+
+    //   window.addEventListener("keydown", keyHandler);
+
+    //   return () => window.removeEventListener("keydown", keyHandler);
+    // }, [back]);
 
   return (
     <motion.div
@@ -167,12 +176,13 @@ const PersonalInvoices = (props: Props) => {
       exit={{
         opacity: 0,
       }}
-      className="w-[50%] h-[50%] bg-card rounded-xl flex flex-col"
+      className="w-[50%] h-fit bg-card rounded-xl flex flex-col"
     >
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Personal Invoices
       </Label>
-      <div className="w-full h-full p-3 flex flex-col overflow-y-scroll">
+      <Button onClick={()=> setPages('dashboard')} className='gap-1 w-[10%] self-end mr-3'><Undo2Icon/>Back</Button>
+      <div className="w-full h-full p-3 flex flex-col ">
         <DataTable columns={columns} data={data} />
       </div>
     </motion.div>
