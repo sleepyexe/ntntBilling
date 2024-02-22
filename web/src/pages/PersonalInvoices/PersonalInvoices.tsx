@@ -8,11 +8,14 @@ import { isEnvBrowser } from "@/utils/misc";
 import {useBack} from '@/state/back'
 import { InvoicesProps } from '@/types/invoices'
 import { useUserData } from '@/state/user'
+import { useSetModalContainer } from '@/state/modals'
+import ModalsProvider from '@/components/ModalsProvider'
 
 
 const PersonalInvoices = () => {
     const [pages, setPages] = usePages()
     const [back, setBack] = useBack()
+    const setContainer = useSetModalContainer()
     const data:InvoicesProps[] = useUserData()
       // Handle pressing escape/backspace
     useEffect(() => {
@@ -45,8 +48,10 @@ const PersonalInvoices = () => {
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Personal Invoices
       </Label>
-      <div className="w-full h-full p-3 flex flex-col ">
-        <DataTable columns={columns} data={data} />
+      <div ref={setContainer} className="w-full h-full p-3 flex flex-col ">
+        <ModalsProvider>
+          <DataTable columns={columns} data={data} />
+        </ModalsProvider>
       </div>
     </motion.div>
   )
