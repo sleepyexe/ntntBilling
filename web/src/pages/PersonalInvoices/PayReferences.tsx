@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label"
 import { usePages } from '@/state/page'
 import SpinningLoader from '@/components/SpinningLoader'
 import { fetchNui } from '@/utils/fetchNui'
+import { useBack } from '@/state/back'
+import { isEnvBrowser } from '@/utils/misc'
 type Props = {}
 
 type playerData = {
@@ -21,7 +23,22 @@ const PayReferences = (props: Props) => {
     const [data, setData] = useState<playerData>({});
     const [ref, setRef] = useState<string>('');
     const [pages, setPages] = usePages()
+    const [back, setBack] = useBack()
+      // Handle pressing escape/backspace
+    useEffect(() => {
+      // Only attach listener when we are visible
+      if (!back) return;
+      const keyHandler = (e: any) => {
+        if (["Escape"].includes(e.code)) {
+          if (!isEnvBrowser()) setPages('dashboard');
+          else setBack(!back);
+        }
+      };
 
+      window.addEventListener("keydown", keyHandler);
+
+      return () => window.removeEventListener("keydown", keyHandler);
+    }, [back]);
     const handleSubmit = async () => {
         setLoading(true)
         await fetchNui('payreferences', {ref: ref}).then((retData: any) => {
@@ -52,7 +69,6 @@ const PayReferences = (props: Props) => {
           <Label className="w-full flex items-center justify-center text-2xl p-2">
             Pay References
           </Label>
-          <Button onClick={()=> setPages('dashboard')} className='gap-1 w-[20%] self-end mr-3'><Undo2Icon size={20}/>Back</Button>
           <div className='w-full p-10'>
             <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5">

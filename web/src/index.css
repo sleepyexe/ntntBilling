@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 body {
-  color: white
+  color: white;
+  background-color: none !important;
+  background: none !important;
+  user-select: none !important;
 }
 
 

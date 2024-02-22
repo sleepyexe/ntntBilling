@@ -2,23 +2,24 @@ import { ColumnDef } from "@tanstack/react-table";
 import { InvoicesProps } from "@/types/invoices";
 import {
   ArrowUpDown,
-  MoreHorizontal,
+  Clipboard,
   CheckIcon,
   XCircleIcon,
 } from "lucide-react";
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-  } from "@/components/ui/dialog"
-  import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { fetchNui } from "@/utils/fetchNui";
+import { useBack } from "@/state/back";
 export const columns: ColumnDef<InvoicesProps>[] = [
   {
     accessorKey: "status",
@@ -37,9 +38,15 @@ export const columns: ColumnDef<InvoicesProps>[] = [
       const status = row.getValue("status");
       const icon =
         status === "paid" ? (
+          <div className="flex gap-2">
           <CheckIcon color="cyan" />
+          Paid
+          </div>
         ) : (
-          <XCircleIcon color="red" />
+          <div className="flex gap-2">
+            <XCircleIcon color="red" />
+            Unpaid
+          </div>
         );
       return <div className="w-fit">{icon}</div>;
     },
@@ -78,64 +85,101 @@ export const columns: ColumnDef<InvoicesProps>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-		const data = row.original
-    const handleSubmit = async () => {
-      await fetchNui('payinvoices', data).then(
-        (retData: any) => {
-          console.log(JSON.stringify(retData))
-        }
-      ).catch((err: any) => {
-        console.log(JSON.stringify(err))
-      })
-    } 
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(data.amount);
+      const data = row.original;
+      const handleSubmit = async () => {
+        await fetchNui("payinvoices", data)
+          .then((retData: any) => {
+            console.log(JSON.stringify(retData));
+          })
+          .catch((err: any) => {
+            console.log(JSON.stringify(err));
+          });
+      };
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(data.amount);
+      const [back, setBack] = useBack();
       return (
-		<Dialog>
-		<DialogTrigger asChild>
-		  <Button variant="outline" disabled={data.status === 'paid' ? true : false}>{data.status === 'paid' ? 'Paid' : 'View'}</Button>
-		</DialogTrigger>
-		<DialogContent className="sm:max-w-[425px] dark	">
-		  <DialogHeader>
-			<DialogTitle>Invoice</DialogTitle>
-			<DialogDescription>
-			  Invoice Details.
-			</DialogDescription>
-		  </DialogHeader>
-		  <div className="grid gap-4 py-4">
-			<div className="grid grid-cols-4 items-center gap-4">
-			  <Label htmlFor="name" className="text-right">
-				Reference Id
-			  </Label>
-			  <Input id="name" disabled value={data.ref} className="col-span-3" />
-			</div>
-			<div className="grid grid-cols-4 items-center gap-4">
-			  <Label htmlFor="name" className="text-right">
-				Amount
-			  </Label>
-			  <Input id="name" disabled value={formatted} className="col-span-3" />
-			</div>
-			<div className="grid grid-cols-4 items-center gap-4">
-			  <Label htmlFor="username" className="text-right">
-				Author
-			  </Label>
-			  <Input id="username" disabled  value={data.author_name} className="col-span-3" />
-			</div>
-			<div className="grid grid-cols-4 items-center gap-4">
-			  <Label htmlFor="username" className="text-right">
-          Note
-			  </Label>
-			  <Input id="username" disabled  value={data.note || ''} className="col-span-3" />
-			</div>
-		  </div>
-		  <DialogFooter>
-			<Button onClick={()=> handleSubmit()} type="submit">Pay</Button>
-		  </DialogFooter>
-		</DialogContent>
-	  </Dialog>
-	  )
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              disabled={data.status === "paid" ? true : false}
+            >
+              {data.status === "paid" ? "Paid" : "View"}
+            </Button>
+          </DialogTrigger>
+          <DialogContent
+            onOpenAutoFocus={() => {
+              setBack(false);
+            }}
+            onCloseAutoFocus={() => {
+              setBack(true);
+            }}
+            className="sm:max-w-[425px] dark	"
+          >
+            <DialogHeader>
+              <DialogTitle>Invoice</DialogTitle>
+              <DialogDescription>Invoice Details.</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Reference Id
+                </Label>
+                <Input
+                  id="name"
+                  disabled
+                  value={data.ref}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Amount
+                </Label>
+                <Input
+                  id="name"
+                  disabled
+                  value={formatted}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                  Author
+                </Label>
+                <Input
+                  id="username"
+                  disabled
+                  value={data.author_name}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="username" className="text-right">
+                  Note
+                </Label>
+                <Input
+                  id="username"
+                  disabled
+                  value={data.note || ""}
+                  className="col-span-3"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button onClick={() => {
+                navigator.clipboard.writeText(data.ref)
+              }} className="gap-2"> <Clipboard/> Copy Reference Id</Button>
+              <Button onClick={() => handleSubmit()} type="submit">
+                Pay
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      );
     },
   },
 ];
