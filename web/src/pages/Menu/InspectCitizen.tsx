@@ -3,9 +3,12 @@ import { motion } from "framer-motion";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { fetchNui } from "@/utils/fetchNui";
 import SpinningLoader from "@/components/SpinningLoader";
+import { usePages } from "@/state/page";
+import { useBack } from "@/state/back";
+import { isEnvBrowser } from "@/utils/misc";
 type Props = {};
 
 type PlayerProps = {
@@ -24,8 +27,24 @@ const formatNumber = (n: any) => {
 const InspectCitizen = (props: Props) => {
   const [playerId, setPlayerId] = React.useState(0);
   const [data, setData] = React.useState<PlayerProps>({});
+  const [pages, setPages] = usePages();
   const [found, setFound] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [back, setBack] = useBack()
+  React.useEffect(() => {
+    // Only attach listener when we are visible
+    if (!back) return;
+    const keyHandler = (e: any) => {
+      if (["Escape"].includes(e.code)) {
+        if (!isEnvBrowser()) setPages("dashboard");
+        else setBack(!back);
+      }
+    };
+
+    window.addEventListener("keydown", keyHandler);
+
+    return () => window.removeEventListener("keydown", keyHandler);
+  }, [back]);
   const handleSubmit = async () => {
     setFound(false)
     setLoading(true)
@@ -58,6 +77,9 @@ const InspectCitizen = (props: Props) => {
       }}
       className="w-fit h-fit bg-card rounded-xl flex flex-col"
     >
+        <button onClick={() => {
+            setPages('dashboard')
+      }} className="w-fit bg-none absolute self-end pr-1 pt-1"><XIcon/></button>
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Inspect Citizen
       </Label>

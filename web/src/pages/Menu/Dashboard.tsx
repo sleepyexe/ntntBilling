@@ -6,6 +6,7 @@ import { isEnvBrowser } from "@/utils/misc";
 import { fetchNui } from "@/utils/fetchNui";
 import { useVisibility } from "@/providers/VisibilityProvider";
 import { motion } from "framer-motion";
+import { XIcon } from "lucide-react";
 type Props = {};
 
 const Dashboard = (props: Props) => {
@@ -40,6 +41,10 @@ const Dashboard = (props: Props) => {
       }}
       className="w-min-[30%] h-[20%] bg-card rounded-xl overflow-auto flex flex-col"
     >
+      <button onClick={() => {
+        if (!isEnvBrowser()) fetchNui("hideFrame");
+        else setVisible(!visible);
+      }} className="w-fit bg-none absolute self-end pr-1 pt-1"><XIcon/></button>
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Billing Menu
       </Label>

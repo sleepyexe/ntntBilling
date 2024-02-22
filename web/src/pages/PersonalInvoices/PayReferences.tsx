@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, Undo2Icon, BanknoteIcon } from "lucide-react";
+import { SearchIcon, XIcon, BanknoteIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { usePages } from "@/state/page";
@@ -111,6 +111,9 @@ const PayReferences = (props: Props) => {
       }}
       className="w-fit h-fit bg-card rounded-xl flex flex-col"
     >
+      <button onClick={() => {
+            setPages('dashboard')
+      }} className="w-fit bg-none absolute self-end pr-1 pt-1"><XIcon/></button>
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Pay References
       </Label>

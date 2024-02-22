@@ -10,6 +10,7 @@ import { InvoicesProps } from '@/types/invoices'
 import { useUserData } from '@/state/user'
 import { useSetModalContainer } from '@/state/modals'
 import ModalsProvider from '@/components/ModalsProvider'
+import { XIcon } from 'lucide-react'
 
 
 const PersonalInvoices = () => {
@@ -45,6 +46,9 @@ const PersonalInvoices = () => {
       }}
       className="w-[50%] h-fit bg-card rounded-xl flex flex-col"
     >
+            <button onClick={() => {
+            setPages('dashboard')
+      }} className="w-fit bg-none absolute self-end pr-1 pt-1"><XIcon/></button>
       <Label className="w-full flex items-center justify-center text-2xl p-2">
         Personal Invoices
       </Label>
