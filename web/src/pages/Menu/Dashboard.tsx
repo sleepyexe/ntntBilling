@@ -39,7 +39,7 @@ const Dashboard = (props: Props) => {
       exit={{
         opacity: 0,
       }}
-      className="w-min-[30%] h-[20%] bg-card rounded-xl overflow-auto flex flex-col"
+      className="w-min-[30%] h-[20%] bg-card rounded-xl flex flex-col"
     >
       <button onClick={() => {
         if (!isEnvBrowser()) fetchNui("hideFrame");

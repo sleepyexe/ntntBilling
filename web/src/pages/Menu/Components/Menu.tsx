@@ -51,7 +51,7 @@ const Menu = (props: Props) => {
         )}
         {config.society && (
           <MenuButton
-            menu="test"
+            menu="society"
             icon={HotelIcon}
             label={
               <>

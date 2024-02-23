@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useModal } from "@/components/ModalsProvider";
 export const columns: ColumnDef<InvoicesProps>[] = [
   {
+    accessorKey: 'ref',
+    header: 'Reference Id'
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       return (
